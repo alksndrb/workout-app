@@ -39,12 +39,15 @@ export default function Register() {
     /* setLoading(true); */
     if (username.length < 3) {
       setError("Username must have at least 3 characters");
+      return;
     }
     if (password.length < 3) {
       setError("Password must have at least 3 characters");
+      return;
     }
     if (password !== confirmPassword) {
       setError("Passwords do not match");
+      return;
     }
     try {
       const result = await handleRegister(username, password);
