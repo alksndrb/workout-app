@@ -16,26 +16,33 @@ export default function AddExercise() {
   }, []);
   async function handleSubmit(e) {
     e.preventDefault();
+
     const duration =
       Number(e.target.elements.durationMin.value * 60) +
       Number(e.target.elements.durationSec.value);
-
-    const exercise = {
+    let exercise = {
       name: e.target.elements.name.value,
       type: e.target.elements.type.value,
-      duration: duration,
       calories: e.target.elements.calories.value,
       difficulty: e.target.elements.difficulty.value,
       fatigue: e.target.elements.fatigue.value,
-      notes: e.target.elements.notes.value,
       date: e.target.elements.date.value,
       time: e.target.elements.time.value,
     };
-
+    setError("");
+    for (const property in exercise) {
+      if (exercise[property] === "") {
+        setError(`Please enter exercise ${property}`);
+        return;
+      }
+    }
+    if (duration === 0) {
+      setError("Please enter exercise duration");
+      return;
+    }
+    exercise = { ...exercise, duration, notes: e.target.elements.notes.value };
     const result = await handleAddExercise(userId, exercise);
-    if (result.error) {
-      setError(result.error);
-    } else {
+    if (!result.error) {
       alert("Success");
       window.location.href = "/user";
     }

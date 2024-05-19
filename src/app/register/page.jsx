@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { handleRegister } from "../services/registerService";
 import Link from "next/link";
 import { checkUser } from "../services/userServices";
+import { set } from "mongoose";
 
 export default function Register() {
   const [error, setError] = useState("");
@@ -30,10 +31,21 @@ export default function Register() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
     const username = e.target.elements.username.value;
     const password = e.target.elements.password.value;
+    const confirmPassword = e.target.elements.confirmPassword.value;
     //add validation for username and password
     /* setLoading(true); */
+    if (username.length < 3) {
+      setError("Username must have at least 3 characters");
+    }
+    if (password.length < 3) {
+      setError("Password must have at least 3 characters");
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+    }
     try {
       const result = await handleRegister(username, password);
       if (result.error) {
@@ -61,7 +73,9 @@ export default function Register() {
         <form onSubmit={handleSubmit}>
           Username: <input name="username" type="text" />
           <br />
-          Password: <input name="password" type="text" />
+          Password: <input name="password" type="password" />
+          <br />
+          Confirm password: <input name="confirmPassword" type="password" />
           <br />
           <button type="submit">Register</button>
         </form>
