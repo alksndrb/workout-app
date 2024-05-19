@@ -16,15 +16,20 @@ export default function AddExercise() {
   }, []);
   async function handleSubmit(e) {
     e.preventDefault();
+    const duration =
+      Number(e.target.elements.durationMin.value * 60) +
+      Number(e.target.elements.durationSec.value);
 
     const exercise = {
       name: e.target.elements.name.value,
       type: e.target.elements.type.value,
-      duration: e.target.elements.duration.value,
+      duration: duration,
       calories: e.target.elements.calories.value,
       difficulty: e.target.elements.difficulty.value,
       fatigue: e.target.elements.fatigue.value,
       notes: e.target.elements.notes.value,
+      date: e.target.elements.date.value,
+      time: e.target.elements.time.value,
     };
 
     const result = await handleAddExercise(userId, exercise);
@@ -57,8 +62,19 @@ export default function AddExercise() {
           <br />
           Duration:{" "}
           <input
-            name="duration"
-            type="text"
+            name="durationMin"
+            placeholder="min"
+            min="0"
+            type="number"
+            className="border-solid border-black border-b-2"
+          />
+          :
+          <input
+            name="durationSec"
+            type="number"
+            min="0"
+            max="59"
+            placeholder="sec"
             className="border-solid border-black border-b-2"
           />
           <br />
@@ -83,12 +99,26 @@ export default function AddExercise() {
             className="border-solid border-black border-b-2"
           />
           <br />
-          Notes:{" "}
+          Date:{" "}
           <input
+            name="date"
+            type="date"
+            className="border-solid border-black border-b-2"
+          />
+          <br />
+          Time:{" "}
+          <input
+            name="time"
+            type="time"
+            className="border-solid border-black border-b-2"
+          />
+          <br />
+          Notes: <br />
+          <textarea
             name="notes"
             type="string"
             className="border-solid border-black border-b-2"
-          />
+          />{" "}
           <br />
           <button type="submit">Add new exercise</button>
           <Link href="/user">Back</Link>

@@ -13,7 +13,17 @@ export async function POST(request) {
 
     const body = await request.json();
 
-    const { name, type, duration, calories, difficulty, fatigue, notes } = body;
+    const {
+      name,
+      type,
+      duration,
+      calories,
+      difficulty,
+      fatigue,
+      date,
+      time,
+      notes,
+    } = body;
 
     if (!userId || !Types.ObjectId.isValid(userId)) {
       return new NextResponse(
@@ -39,6 +49,8 @@ export async function POST(request) {
       calories,
       difficulty,
       fatigue,
+      date,
+      time,
       notes,
     });
 

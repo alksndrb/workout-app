@@ -34,15 +34,19 @@ export default function UserPage() {
   }
 
   if (userData) {
-    const exercises = userData.exercises.map((exercise, index) => (
-      <span key={index}>
+    const exercises = userData.exercises.map((exercise) => (
+      <span key={exercise._id} id={exercise._id}>
         <hr />
         name: {exercise.name} <br />
         type: {exercise.type} <br />
-        duration: {exercise.duration} <br />
+        duration: {String(Math.floor(exercise.duration / 60)).padStart(2, "0")}
+        min:{String(exercise.duration % 60).padStart(2, "0")}sec
+        <br />
         calories: {exercise.calories} <br />
         difficulty: {exercise.difficulty} <br />
         fatigue: {exercise.fatigue} <br />
+        date: {exercise.date} <br />
+        time: {exercise.time} <br />
         notes: {exercise.notes} <br />
       </span>
     ));
