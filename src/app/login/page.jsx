@@ -16,7 +16,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   //redirect to user page if user is already logged in
-  /* useEffect(() => {
+  useEffect(() => {
     async function fetchData() {
       try {
         const userId = localStorage.getItem("userId");
@@ -33,14 +33,13 @@ export default function Login() {
       }
     }
     fetchData();
-  }, []); */
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
     const username = e.target.elements.username.value;
     const password = e.target.elements.password.value;
 
-    /* setLoading(true); */
     try {
       const result = await handleLogin(username, password);
       if (result.error) {
@@ -51,8 +50,6 @@ export default function Login() {
       }
     } catch (error) {
       setError("An error occured during login");
-    } finally {
-      /* setLoading(false); */
     }
   }
 
@@ -60,7 +57,7 @@ export default function Login() {
     // Render loading indicator or placeholder content while fetching data
     return <p>Loading...</p>;
   }
-  //add style to the component
+
   return (
     <>
       <div>

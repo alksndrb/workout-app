@@ -7,6 +7,7 @@ import { handleAddExercise } from "../services/exerciseService";
 export default function AddExercise() {
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
+  //check if user is logged in
   useEffect(() => {
     const storedUserId = localStorage.getItem("userId");
     if (!storedUserId) {
@@ -47,7 +48,7 @@ export default function AddExercise() {
       window.location.href = "/user";
     }
   }
-
+  //add styles
   return (
     <>
       <div>

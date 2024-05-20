@@ -4,7 +4,8 @@ import {
 } from "@/app/services/exerciseService";
 import { handleLogOut } from "@/app/services/userServices";
 import Link from "next/link";
-import { FormButton } from "../inputComponents/inputComponents";
+
+//consider reorganizing components
 export function UserHeader({ username }) {
   return (
     <>

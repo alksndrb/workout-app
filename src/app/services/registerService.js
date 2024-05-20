@@ -1,3 +1,4 @@
+//move to user services
 export async function handleRegister(username, password) {
   const res = await fetch("api/register", {
     method: "POST",

@@ -8,7 +8,7 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
-    //check to see if useId is valid
+    //check to see if userId is valid
     if (!userId || !Types.ObjectId.isValid(userId)) {
       return new NextResponse(
         JSON.stringify({ error: "Invalid or missing userId" }),
@@ -24,17 +24,17 @@ export async function GET(request) {
         status: 404,
       });
     }
-    //return the user - change later to return users exercies
+
     const exercises = await Exercise.find({ user: new Types.ObjectId(userId) });
-    // sort the exercises
+    // sort the exercises, decending
     const sortedExercises = exercises.sort((a, b) => {
-      // First, compare by date in descending order
+      // compare by date in descending order
       const dateComparison = b.date.localeCompare(a.date);
       if (dateComparison !== 0) {
         return dateComparison;
       }
 
-      // If dates are the same, compare by time in descending order
+      // if dates are the same, compare by time in descending order
       return b.time.localeCompare(a.time);
     });
     return new NextResponse(

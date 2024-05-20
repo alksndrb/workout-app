@@ -1,3 +1,4 @@
+//move to exercises services
 export async function getUserExercises(userId) {
   const res = await fetch(`api/user?userId=${userId}`);
 

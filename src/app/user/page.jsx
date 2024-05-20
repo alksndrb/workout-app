@@ -1,18 +1,16 @@
 "use client";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getUserExercises, handleLogOut } from "../services/userServices";
 import {
   DateComponent,
   Exercise,
-  ExerciseTable,
   UserHeader,
 } from "@/components/userComponents/userComponents";
 
 export default function UserPage() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  //  check if user is logged in
   useEffect(() => {
     async function fetchData() {
       try {
@@ -40,6 +38,7 @@ export default function UserPage() {
   }
 
   if (userData) {
+    // construct the exercises
     const exercises = userData.exercises.map((exercise, i, arr) => {
       const isDifferentDate = i > 0 && exercise.date !== arr[i - 1].date;
       return (

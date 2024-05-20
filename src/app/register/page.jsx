@@ -13,6 +13,7 @@ import {
 
 export default function Register() {
   const [error, setError] = useState("");
+  //consider remove loading
   const [loading, setLoading] = useState(false);
 
   //redirect to user page if user is already logged in
@@ -28,8 +29,6 @@ export default function Register() {
         }
       } catch (error) {
         console.log("Error fetching data:", error);
-      } finally {
-        setLoading(false);
       }
     }
     fetchData();
@@ -42,7 +41,7 @@ export default function Register() {
     const password = e.target.elements.password.value;
     const confirmPassword = e.target.elements.confirmPassword.value;
     //add validation for username and password
-    /* setLoading(true); */
+
     if (username.length < 3) {
       setError("Username must have at least 3 characters");
       return;
@@ -66,8 +65,6 @@ export default function Register() {
       }
     } catch (error) {
       setError("An error occured during registration");
-    } finally {
-      /* setLoading(false); */
     }
   }
 
@@ -75,7 +72,7 @@ export default function Register() {
     // Render loading indicator or placeholder content while fetching data
     return <p>Loading...</p>;
   }
-  //add style to the component
+
   return (
     <>
       <div>

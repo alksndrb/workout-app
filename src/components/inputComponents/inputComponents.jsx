@@ -1,3 +1,5 @@
+//consider reorganizing components
+
 export function TextInput({ name, type, label, placeholder = "" }) {
   return (
     <>
