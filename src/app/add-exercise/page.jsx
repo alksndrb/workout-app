@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 import Link from "next/link";
-import { handleAddExercise } from "../services/addExerciseService";
+import { handleAddExercise } from "../services/exerciseService";
 
 export default function AddExercise() {
   const [userId, setUserId] = useState(null);

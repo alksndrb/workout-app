@@ -3,13 +3,20 @@ import { useEffect, useState } from "react";
 import { handleLogin } from "../services/loginService";
 import Link from "next/link";
 import { checkUser } from "../services/userServices";
+import {
+  ErrorMessage,
+  FormBox,
+  FormButton,
+  FormMessage,
+  TextInput,
+} from "@/components/inputComponents/inputComponents";
 
 export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   //redirect to user page if user is already logged in
-  useEffect(() => {
+  /* useEffect(() => {
     async function fetchData() {
       try {
         const userId = localStorage.getItem("userId");
@@ -26,7 +33,7 @@ export default function Login() {
       }
     }
     fetchData();
-  }, []);
+  }, []); */
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -57,20 +64,25 @@ export default function Login() {
   return (
     <>
       <div>
-        <form onSubmit={handleSubmit}>
-          Username: <input name="username" type="text" />
-          <br />
-          Password: <input name="password" type="password" />
-          <br />
-          <button type="submit">Login</button>
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-center pt-[100px]"
+        >
+          <FormBox>
+            <TextInput name="username" label="Username" type="text" />
+            <TextInput name="password" label="Password" type="password" />
+            <FormButton value="Log in" type="submit" />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+          </FormBox>
         </form>
-        {error && <p>{error}</p>}
-        <p>
-          No Account? Register{" "}
-          <Link href="/register" className="text-red-500">
-            Here
-          </Link>
-        </p>
+        <FormMessage>
+          <p>
+            No Account? Register{" "}
+            <Link href="/register" className="text-accent text-bold">
+              Here
+            </Link>
+          </p>
+        </FormMessage>
       </div>
     </>
   );

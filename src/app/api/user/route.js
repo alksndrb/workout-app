@@ -26,8 +26,19 @@ export async function GET(request) {
     }
     //return the user - change later to return users exercies
     const exercises = await Exercise.find({ user: new Types.ObjectId(userId) });
+    // sort the exercises
+    const sortedExercises = exercises.sort((a, b) => {
+      // First, compare by date in descending order
+      const dateComparison = b.date.localeCompare(a.date);
+      if (dateComparison !== 0) {
+        return dateComparison;
+      }
+
+      // If dates are the same, compare by time in descending order
+      return b.time.localeCompare(a.time);
+    });
     return new NextResponse(
-      JSON.stringify({ username: user.username, exercises: exercises }),
+      JSON.stringify({ username: user.username, exercises: sortedExercises }),
       {
         status: 200,
       }

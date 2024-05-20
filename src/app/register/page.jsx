@@ -3,7 +3,13 @@ import { useEffect, useState } from "react";
 import { handleRegister } from "../services/registerService";
 import Link from "next/link";
 import { checkUser } from "../services/userServices";
-import { set } from "mongoose";
+import {
+  ErrorMessage,
+  FormBox,
+  FormButton,
+  FormMessage,
+  TextInput,
+} from "@/components/inputComponents/inputComponents";
 
 export default function Register() {
   const [error, setError] = useState("");
@@ -73,22 +79,30 @@ export default function Register() {
   return (
     <>
       <div>
-        <form onSubmit={handleSubmit}>
-          Username: <input name="username" type="text" />
-          <br />
-          Password: <input name="password" type="password" />
-          <br />
-          Confirm password: <input name="confirmPassword" type="password" />
-          <br />
-          <button type="submit">Register</button>
+        <form
+          onSubmit={handleSubmit}
+          className="flex justify-center pt-[100px]"
+        >
+          <FormBox>
+            <TextInput name="username" label="Username" type="text" />
+            <TextInput name="password" label="Password" type="password" />
+            <TextInput
+              name="confirmPassword"
+              label="Confirm password"
+              type="password"
+            />
+            <FormButton value="Register" type="submit" />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+          </FormBox>
         </form>
-        {error && <p>{error}</p>}
-        <p>
-          Have Account? Login{" "}
-          <Link href="/login" className="text-red-500">
-            Here
-          </Link>
-        </p>
+        <FormMessage>
+          <p>
+            Already have an account? Log in{" "}
+            <Link href="/login" className="text-accent text-bold">
+              Here
+            </Link>
+          </p>
+        </FormMessage>
       </div>
     </>
   );

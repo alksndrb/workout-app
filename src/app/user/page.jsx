@@ -2,6 +2,12 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getUserExercises, handleLogOut } from "../services/userServices";
+import {
+  DateComponent,
+  Exercise,
+  ExerciseTable,
+  UserHeader,
+} from "@/components/userComponents/userComponents";
 
 export default function UserPage() {
   const [userData, setUserData] = useState(null);
@@ -34,33 +40,35 @@ export default function UserPage() {
   }
 
   if (userData) {
-    const exercises = userData.exercises.map((exercise) => (
-      <span key={exercise._id} id={exercise._id}>
-        <hr />
-        name: {exercise.name} <br />
-        type: {exercise.type} <br />
-        duration: {String(Math.floor(exercise.duration / 60)).padStart(2, "0")}
-        min:{String(exercise.duration % 60).padStart(2, "0")}sec
-        <br />
-        calories: {exercise.calories} <br />
-        difficulty: {exercise.difficulty} <br />
-        fatigue: {exercise.fatigue} <br />
-        date: {exercise.date} <br />
-        time: {exercise.time} <br />
-        notes: {exercise.notes} <br />
-      </span>
-    ));
+    const exercises = userData.exercises.map((exercise, i, arr) => {
+      const isDifferentDate = i > 0 && exercise.date !== arr[i - 1].date;
+      return (
+        <div key={exercise._id}>
+          {(i === 0 || isDifferentDate) && (
+            <DateComponent date={exercise.date} />
+          )}
+          <Exercise
+            id={exercise._id}
+            name={exercise.name}
+            type={exercise.type}
+            duration={exercise.duration}
+            calories={exercise.calories}
+            difficulty={exercise.difficulty}
+            fatigue={exercise.fatigue}
+            date={exercise.date}
+            time={exercise.time}
+            notes={exercise.notes}
+          />
+        </div>
+      );
+    });
 
     return (
       <>
         <div>
-          <h1>User Page</h1>
-          <p>Username: {userData.username}</p>
+          <UserHeader username={userData.username} />
+          {exercises}
         </div>
-        {exercises}
-        <hr />
-        <Link href="/add-exercise">Add new exercise</Link>
-        <button onClick={handleLogOut}>Log out</button>
       </>
     );
   }
