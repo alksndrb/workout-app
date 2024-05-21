@@ -108,7 +108,7 @@ export function UserPageNav() {
           <div className="font-semibold flex w-full items-center">
             Your exercises:
           </div>
-          <div className="w-[50%] flex justify-end text-base">
+          <div className=" flex justify-end text-base">
             <NavLink src="/add-exercise" value="+ Add exercise" />
             &nbsp; &nbsp; &nbsp; &nbsp;
             <NavLink src="/statistics" value="View Statistics" />

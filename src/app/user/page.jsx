@@ -46,7 +46,7 @@ export default function UserPage() {
     // Render loading indicator or placeholder content while fetching data
     return <p>Loading...</p>;
   }
-
+  //Add message when there are no exercises to display
   if (userData) {
     // construct the exercises
     const exercises = userData.exercises.map((exercise, i, arr) => {

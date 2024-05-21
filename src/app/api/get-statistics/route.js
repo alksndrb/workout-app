@@ -46,7 +46,7 @@ export async function POST(request) {
     let weekNum = 0;
     for (const week in exercisesByWeek) {
       statistics[weekNum] = {
-        week: weekNum + 1,
+        week: week,
         totalDuration: 0,
         totalNumber: 0,
       };

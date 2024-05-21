@@ -161,7 +161,7 @@ export function ExerciseDuration({ label, nameMin, nameSec }) {
 export function NavLink({ src, value }) {
   return (
     <Link
-      className="w-fit my-4 px-5 text-xl py-1 bg-tertiary border-2 border-tertiary"
+      className="w-[200px] my-4 px-5 text-xl py-1 bg-tertiary border-2 border-tertiary"
       href={src}
     >
       {value}
