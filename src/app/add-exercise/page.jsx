@@ -1,8 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import Link from "next/link";
 import { handleAddExercise } from "../services/exerciseService";
+
+import { UserHeader } from "@/components/userComponents/userComponents";
+import { GreenLine } from "@/components/styleComponents/styleComponents";
+import {
+  BackLink,
+  ExerciseDuration,
+  ExerciseInput,
+  ExerciseSelect,
+  ExerciseSubmitButton,
+  ExerciseTextArea,
+} from "@/components/inputComponents/inputComponents";
 
 export default function AddExercise() {
   const [userId, setUserId] = useState(null);
@@ -48,90 +58,65 @@ export default function AddExercise() {
       window.location.href = "/user";
     }
   }
-  //add styles
+  const exerciseTypes = ["cardio", "core", "strength", "felxibility"];
+  const numValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
   return (
     <>
       <div>
-        Adding new exercise
-        <form onSubmit={handleSubmit}>
-          Name:{" "}
-          <input
-            name="name"
-            type="text"
-            className="border-solid border-black border-b-2"
-          />
-          <br />
-          Type:{" "}
-          <input
+        <UserHeader></UserHeader>
+        <GreenLine />
+        <form onSubmit={handleSubmit} className=" max-w-[1200px] m-auto">
+          <div className="text-xl py-2 font-semibold border-b-2">
+            Add new exercise
+          </div>
+          <ExerciseInput name="name" type="text" label="Name" />
+          <ExerciseSelect
             name="type"
-            type="text"
-            className="border-solid border-black border-b-2"
+            label="Type"
+            options={exerciseTypes}
+            placeholder="Select type of exercise"
           />
-          <br />
-          Duration:{" "}
-          <input
-            name="durationMin"
-            placeholder="min"
-            min="0"
-            type="number"
-            className="border-solid border-black border-b-2"
-          />
-          :
-          <input
-            name="durationSec"
-            type="number"
-            min="0"
-            max="59"
-            placeholder="sec"
-            className="border-solid border-black border-b-2"
-          />
-          <br />
-          Calories:{" "}
-          <input
-            name="calories"
-            type="number"
-            className="border-solid border-black border-b-2"
-          />
-          <br />
-          Difficulty:{" "}
-          <input
+          <ExerciseInput name="calories" type="number" label="Calories" />
+          <ExerciseSelect
             name="difficulty"
-            type="number"
-            className="border-solid border-black border-b-2"
+            label="Difficulty"
+            options={numValues}
+            placeholder="Select difficulty"
+            maxWidth="200px"
           />
-          <br />
-          Fatigue:{" "}
-          <input
+          <ExerciseSelect
             name="fatigue"
-            type="number"
-            className="border-solid border-black border-b-2"
+            label="Fatigue"
+            options={numValues}
+            placeholder="Select fatigue"
+            maxWidth="200px"
           />
-          <br />
-          Date:{" "}
-          <input
+          <ExerciseDuration
+            label="Duration"
+            nameMin="durationMin"
+            nameSec="durationSec"
+          />
+          <ExerciseInput
             name="date"
             type="date"
-            className="border-solid border-black border-b-2"
+            label="Date"
+            maxWidth="200px"
           />
-          <br />
-          Time:{" "}
-          <input
+          <ExerciseInput
             name="time"
             type="time"
-            className="border-solid border-black border-b-2"
+            label="Time"
+            maxWidth="200px"
           />
-          <br />
-          Notes: <br />
-          <textarea
-            name="notes"
-            type="string"
-            className="border-solid border-black border-b-2"
-          />{" "}
-          <br />
-          <button type="submit">Add new exercise</button>
-          <Link href="/user">Back</Link>
+          <ExerciseTextArea name="notes" label="Note" />
+          <ExerciseSubmitButton value="Add new exercise" />
+          <span className="ml-10">
+            <BackLink src={"/user"} value="Back" />
+          </span>
+          {error && <p>{error}</p>}
         </form>
-        {error && <p>{error}</p>}
+        <GreenLine />
       </div>
     </>
   );
