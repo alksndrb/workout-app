@@ -158,7 +158,7 @@ export function ExerciseDuration({ label, nameMin, nameSec }) {
     </div>
   );
 }
-export function BackLink({ src, value }) {
+export function NavLink({ src, value }) {
   return (
     <Link
       className="w-fit my-4 px-5 text-xl py-1 bg-tertiary border-2 border-tertiary"

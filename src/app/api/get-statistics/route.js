@@ -4,7 +4,7 @@ import Exercise from "@/app/lib/models/exercise";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
 import { getWeekOfTheMonth } from "@/app/services/exerciseService";
-
+//convert to GET method - see DELETE
 export async function POST(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -42,21 +42,31 @@ export async function POST(request) {
       exercisesByWeek[weekOfMonth].push(exercise);
     });
     // get statistics for each week
-    const statistics = {};
+    const statistics = [];
+    let weekNum = 0;
     for (const week in exercisesByWeek) {
-      statistics[week] = { totalDuration: 0, totalNumber: 0 };
+      statistics[weekNum] = {
+        week: weekNum + 1,
+        totalDuration: 0,
+        totalNumber: 0,
+      };
+
       let difficultySum = 0;
       let fatigueSum = 0;
       for (const exercise in exercisesByWeek[week]) {
         const ex = exercisesByWeek[week][exercise];
-        statistics[week].totalDuration += ex.duration;
-        statistics[week].totalNumber++;
+        statistics[weekNum].totalDuration += ex.duration;
+        statistics[weekNum].totalNumber++;
         difficultySum += ex.difficulty;
         fatigueSum += ex.fatigue;
       }
-      statistics[week].avgDifficulty =
-        difficultySum / statistics[week].totalNumber;
-      statistics[week].avgFatigue = fatigueSum / statistics[week].totalNumber;
+
+      statistics[weekNum].avgDifficulty =
+        difficultySum / statistics[weekNum].totalNumber;
+      statistics[weekNum].avgFatigue =
+        fatigueSum / statistics[weekNum].totalNumber;
+
+      weekNum++;
     }
 
     return new NextResponse(JSON.stringify({ statistics: statistics }), {

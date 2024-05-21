@@ -4,6 +4,7 @@ import {
 } from "@/app/services/exerciseService";
 import { handleLogOut } from "@/app/services/userServices";
 import Link from "next/link";
+import { NavLink } from "../inputComponents/inputComponents";
 
 //consider reorganizing components
 export function UserHeader({ username }) {
@@ -12,8 +13,7 @@ export function UserHeader({ username }) {
       <div className="w-full text-xl bg-primary border-b-accent border-b-2 py-3 px-1">
         <div className="max-w-[1200px] m-auto flex justify-between">
           <p>Username: {username}</p>
-          <div className="w-[30%] flex justify-between">
-            <Link href="/add-exercise">Add exercise</Link>
+          <div className="w-[30%] flex justify-end">
             <button onClick={handleLogOut}>Log out</button>
           </div>
         </div>
@@ -22,7 +22,7 @@ export function UserHeader({ username }) {
   );
 }
 
-export function Exercise({
+export function ExerciseComponent({
   name,
   type,
   duration,
@@ -33,6 +33,7 @@ export function Exercise({
   time,
   notes,
   id,
+  handleDelete,
 }) {
   return (
     <div className="border-b-2 py-2">
@@ -63,7 +64,12 @@ export function Exercise({
             <button className="w-fit px-3  bg-light border-accent border-2 mr-5">
               Edit
             </button>
-            <button className="w-fit px-3  bg-red-500 border-red-500 border-2">
+            <button
+              onClick={() => {
+                handleDelete(id);
+              }}
+              className="w-fit px-3  bg-red-500 border-red-500 border-2"
+            >
               Delete
             </button>
           </div>
@@ -88,6 +94,25 @@ export function DateComponent({ date }) {
       <div className="bg-secondary">
         <div className="max-w-[1200px] m-auto">
           {dayInWeek} {formatDate(date)}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export function UserPageNav() {
+  return (
+    <>
+      <div className="w-full text-xl px-1">
+        <div className="max-w-[1200px] m-auto flex justify-between">
+          <div className="font-semibold flex w-full items-center">
+            Your exercises:
+          </div>
+          <div className="w-[50%] flex justify-end text-base">
+            <NavLink src="/add-exercise" value="+ Add exercise" />
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <NavLink src="/statistics" value="View Statistics" />
+          </div>
         </div>
       </div>
     </>

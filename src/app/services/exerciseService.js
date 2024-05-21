@@ -21,6 +21,21 @@ export async function getStatistics(userId, monthYear) {
   const result = await res.json();
   return result;
 }
+
+export async function deleteExercise(userId, exerciseId) {
+  const res = await fetch(
+    `api/delete-exercise?userId=${userId}&exerciseId=${exerciseId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  console.log(res);
+  const result = await res.json();
+  return result;
+}
 //move to date services
 export function formatDate(dateString) {
   // Parse the date string
@@ -59,4 +74,31 @@ export function getWeekOfTheMonth(dateString) {
   const weekOfMonth = Math.ceil((dateOfMonth + 6 - adjustedDayOfWeek) / 7);
 
   return weekOfMonth;
+}
+
+export function formatDateToMonthYear(dateString) {
+  const dateParts = dateString.split("-");
+  const year = parseInt(dateParts[0]);
+  const month = parseInt(dateParts[1]) - 1; // Adjusting month as it starts from 0
+
+  const monthNames = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const formattedDate = new Date(year, month);
+  const formattedString =
+    monthNames[formattedDate.getMonth()] + " " + formattedDate.getFullYear();
+
+  return formattedString;
 }

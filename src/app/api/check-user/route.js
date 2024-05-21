@@ -22,6 +22,7 @@ export async function GET(request) {
         status: 404,
       });
     }
+    //consider returning username
     return new NextResponse(JSON.stringify({ status: "ok" }), {
       status: 200,
     });

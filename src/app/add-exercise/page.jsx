@@ -6,12 +6,12 @@ import { handleAddExercise } from "../services/exerciseService";
 import { UserHeader } from "@/components/userComponents/userComponents";
 import { GreenLine } from "@/components/styleComponents/styleComponents";
 import {
-  BackLink,
   ExerciseDuration,
   ExerciseInput,
   ExerciseSelect,
   ExerciseSubmitButton,
   ExerciseTextArea,
+  NavLink,
 } from "@/components/inputComponents/inputComponents";
 
 export default function AddExercise() {
@@ -112,7 +112,7 @@ export default function AddExercise() {
           <ExerciseTextArea name="notes" label="Note" />
           <ExerciseSubmitButton value="Add new exercise" />
           <span className="ml-10">
-            <BackLink src={"/user"} value="Back" />
+            <NavLink src={"/user"} value="Back" />
           </span>
           {error && <p>{error}</p>}
         </form>
