@@ -7,29 +7,33 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
-    //check to see if useId is valid
+    //check if userId exists and is valid
     if (!userId || !Types.ObjectId.isValid(userId)) {
       return new NextResponse(
         JSON.stringify({ error: "Invalid or missing userId" }),
         { status: 400 }
       );
     }
+    //connect to db
     await dbConnect();
-    //check to see if user is in database
+    //find user in db and return error if user doesnt exist
     const user = await User.findById(userId);
     if (!user) {
       return new NextResponse(JSON.stringify({ error: "User not found" }), {
         status: 404,
       });
     }
-    //consider returning username
-    return new NextResponse(JSON.stringify({ status: "ok" }), {
-      status: 200,
-    });
+    //return status ok and username if user exists in db
+    return new NextResponse(
+      JSON.stringify({ status: "ok", username: user.username }),
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     console.error(error);
     return new NextResponse(
-      { error: "Internal Server Error" },
+      { error: "Error in checking user" },
       { status: 500 }
     );
   }

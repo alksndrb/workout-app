@@ -1,47 +1,46 @@
 "use client";
 import { useEffect, useState } from "react";
-import { handleLogin } from "../services/loginService";
+
 import Link from "next/link";
-import { checkUser } from "../services/userServices";
+import { checkUser, handleLogin } from "../services/userServices";
 import {
   ErrorMessage,
   FormBox,
   FormButton,
   FormMessage,
   TextInput,
-} from "@/components/inputComponents/inputComponents";
+} from "@/components/inputComponents";
 
 export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
   //redirect to user page if user is already logged in
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const userId = localStorage.getItem("userId");
-
-        const result = await checkUser(userId);
-
-        if (result.status === "ok") {
-          window.location.href = "/user";
-        }
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      } finally {
-        setLoading(false);
+  async function fetchData() {
+    try {
+      const userId = localStorage.getItem("userId");
+      const result = await checkUser(userId);
+      if (result.status === "ok") {
+        window.location.href = "/user";
       }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
+  }
+  useEffect(() => {
     fetchData();
   }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const username = e.target.elements.username.value;
-    const password = e.target.elements.password.value;
 
     try {
-      const result = await handleLogin(username, password);
+      const result = await handleLogin(user.username, user.password);
       if (result.error) {
         setError(result.error);
       } else {
@@ -51,6 +50,14 @@ export default function Login() {
     } catch (error) {
       setError("An error occured during login");
     }
+  }
+  //for handling state change of input fields
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
   }
 
   if (loading) {
@@ -66,8 +73,20 @@ export default function Login() {
           className="flex justify-center pt-[100px]"
         >
           <FormBox>
-            <TextInput name="username" label="Username" type="text" />
-            <TextInput name="password" label="Password" type="password" />
+            <TextInput
+              name="username"
+              label="Username"
+              type="text"
+              value={user.username}
+              onChange={handleChange}
+            />
+            <TextInput
+              name="password"
+              label="Password"
+              type="password"
+              value={user.password}
+              onChange={handleChange}
+            />
             <FormButton value="Log in" type="submit" />
             {error && <ErrorMessage>{error}</ErrorMessage>}
           </FormBox>

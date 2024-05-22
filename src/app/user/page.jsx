@@ -1,24 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getUserExercises } from "../services/userServices";
+
 import {
   DateComponent,
-  Exercise,
   ExerciseComponent,
   UserHeader,
   UserPageNav,
-} from "@/components/userComponents/userComponents";
-import { deleteExercise } from "../services/exerciseService";
+} from "@/components/userComponents";
+import { deleteExercise, getUserExercises } from "../services/exerciseService";
 
 export default function UserPage() {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
   //  check if user is logged in
   async function fetchData() {
     try {
-      const userId = localStorage.getItem("userId");
-
-      const result = await getUserExercises(userId);
+      const storedUserId = localStorage.getItem("userId");
+      if (!storedUserId) {
+        window.location.href = "/login";
+      }
+      setUserId(storedUserId);
+      const result = await getUserExercises(storedUserId);
       if (result.error) {
         window.location.href = "/login";
         throw new Error(result.error);
@@ -37,10 +40,13 @@ export default function UserPage() {
   }, []);
   async function handleDelete(exerciseId) {
     const userId = localStorage.getItem("userId");
-    /* console.log(userId);
-    console.log(exerciseId); */
-    await deleteExercise(userId, exerciseId);
-    await fetchData();
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this exercis?"
+    );
+    if (isConfirmed) {
+      await deleteExercise(userId, exerciseId);
+      await fetchData();
+    }
   }
   if (loading) {
     // Render loading indicator or placeholder content while fetching data
@@ -79,6 +85,11 @@ export default function UserPage() {
           <UserHeader username={userData.username} />
 
           <UserPageNav />
+          {exercises.length === 0 && (
+            <p className="max-w-[1200px] m-auto text-lg">
+              You have no saved exercises
+            </p>
+          )}
           {exercises}
         </div>
       </>

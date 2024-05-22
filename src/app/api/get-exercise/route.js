@@ -4,7 +4,7 @@ import Exercise from "@/app/lib/models/exercise";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
-export async function DELETE(request) {
+export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const exerciseId = searchParams.get("exerciseId");
@@ -45,14 +45,16 @@ export async function DELETE(request) {
         )
       );
     }
-    //find and delete exercise
-    await Exercise.findByIdAndDelete(exerciseId);
-    return new NextResponse(JSON.stringify({ message: "Exercise deleted" }), {
-      status: 200,
-    });
+    //return username and exercise if tis found
+    return new NextResponse(
+      JSON.stringify({ username: user.username, exercise: exercise }),
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     return new NextResponse(
-      JSON.stringify({ error: "Error in deleting note" }, { status: 500 })
+      JSON.stringify({ error: "Error in getting exercise" }, { status: 500 })
     );
   }
 }

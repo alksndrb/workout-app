@@ -3,23 +3,23 @@ import User from "@/app/lib/models/user";
 import Exercise from "@/app/lib/models/exercise";
 import { Types } from "mongoose";
 import { NextResponse } from "next/server";
-import { getWeekOfTheMonth } from "@/app/services/exerciseService";
-//convert to GET method - see DELETE
-export async function POST(request) {
+import { getWeekOfTheMonth } from "@/app/services/dateServices";
+
+export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
+    const monthYear = searchParams.get("monthYear");
     const userId = searchParams.get("userId");
-    const { monthYear } = await request.json();
-    console.log(monthYear);
+    //check if userId exists and is valid
     if (!userId || !Types.ObjectId.isValid(userId)) {
       return new NextResponse(
         JSON.stringify({ error: "Invalid or missing userId" }),
         { status: 400 }
       );
     }
-
+    //connect to db
     await dbConnect();
-
+    //find user in db and return error if user doesnt exist
     const user = await User.findById(userId);
     if (!user) {
       return new NextResponse(JSON.stringify({ error: "User not found" }), {
@@ -68,14 +68,14 @@ export async function POST(request) {
 
       weekNum++;
     }
-
+    // return statistics
     return new NextResponse(JSON.stringify({ statistics: statistics }), {
       status: 200,
     });
   } catch (error) {
     console.error(error);
     return new NextResponse(
-      { error: "Internal Server Error" },
+      { error: "Error getting statistics" },
       { status: 500 }
     );
   }

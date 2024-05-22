@@ -5,8 +5,9 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
   try {
     const { username, password } = await request.json();
+    //connect to db
     await dbConnect();
-
+    //check if user exist and password matches
     const user = await User.findOne({ username });
     if (!user || user.password !== password) {
       return new NextResponse(
@@ -14,6 +15,7 @@ export async function POST(request) {
         { status: 401 }
       );
     }
+    //return userId
     return new NextResponse(
       JSON.stringify({
         userId: user._id,
@@ -21,10 +23,8 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch {
-    console.log(error);
-    return new NextResponse(
-      JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ error: "Error loging in" }), {
+      status: 500,
+    });
   }
 }

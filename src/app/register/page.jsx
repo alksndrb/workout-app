@@ -1,36 +1,38 @@
 "use client";
 import { useEffect, useState } from "react";
-import { handleRegister } from "../services/registerService";
+
 import Link from "next/link";
-import { checkUser } from "../services/userServices";
+import { checkUser, handleRegister } from "../services/userServices";
 import {
   ErrorMessage,
   FormBox,
   FormButton,
   FormMessage,
   TextInput,
-} from "@/components/inputComponents/inputComponents";
+} from "@/components/inputComponents";
 
 export default function Register() {
   const [error, setError] = useState("");
-  //consider remove loading
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+  async function fetchData() {
+    try {
+      const userId = localStorage.getItem("userId");
 
+      const result = await checkUser(userId);
+
+      if (result.status === "ok") {
+        window.location.href = "/user";
+      }
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+  }
   //redirect to user page if user is already logged in
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const userId = localStorage.getItem("userId");
-
-        const result = await checkUser(userId);
-
-        if (result.status === "ok") {
-          window.location.href = "/user";
-        }
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
-    }
     fetchData();
   }, []);
 
@@ -67,12 +69,14 @@ export default function Register() {
       setError("An error occured during registration");
     }
   }
-
-  if (loading) {
-    // Render loading indicator or placeholder content while fetching data
-    return <p>Loading...</p>;
+  //for handling state change of input fields
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({
+      ...prevUser,
+      [name]: value,
+    }));
   }
-
   return (
     <>
       <div>
@@ -81,12 +85,26 @@ export default function Register() {
           className="flex justify-center pt-[100px]"
         >
           <FormBox>
-            <TextInput name="username" label="Username" type="text" />
-            <TextInput name="password" label="Password" type="password" />
+            <TextInput
+              name="username"
+              label="Username"
+              type="text"
+              value={user.username}
+              onChange={handleChange}
+            />
+            <TextInput
+              name="password"
+              label="Password"
+              type="password"
+              value={user.password}
+              onChange={handleChange}
+            />
             <TextInput
               name="confirmPassword"
               label="Confirm password"
               type="password"
+              value={user.confirmPassword}
+              onChange={handleChange}
             />
             <FormButton value="Register" type="submit" />
             {error && <ErrorMessage>{error}</ErrorMessage>}

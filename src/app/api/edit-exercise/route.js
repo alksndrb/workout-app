@@ -4,11 +4,23 @@ import Exercise from "@/app/lib/models/exercise";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
-export async function DELETE(request) {
+export async function PATCH(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const exerciseId = searchParams.get("exerciseId");
     const userId = searchParams.get("userId");
+    const body = await request.json();
+    const {
+      _id,
+      name,
+      type,
+      duration,
+      calories,
+      difficulty,
+      fatigue,
+      date,
+      time,
+      notes,
+    } = body;
     //check if userId exists and is valid
     if (!userId || !Types.ObjectId.isValid(userId)) {
       return new NextResponse(
@@ -16,7 +28,7 @@ export async function DELETE(request) {
       );
     }
     //check if exerciseId exists and is valid
-    if (!exerciseId || !Types.ObjectId.isValid(exerciseId)) {
+    if (!_id || !Types.ObjectId.isValid(_id)) {
       return new NextResponse(
         JSON.stringify(
           { error: "Invalid or missing exerciseId" },
@@ -34,7 +46,7 @@ export async function DELETE(request) {
       });
     }
     //find exercise in db and return error if exercise doesnt exist
-    const exercise = await Exercise.findOne({ _id: exerciseId, user: userId });
+    const exercise = await Exercise.findOne({ _id: _id, user: userId });
     if (!exercise) {
       return new NextResponse(
         JSON.stringify(
@@ -45,14 +57,32 @@ export async function DELETE(request) {
         )
       );
     }
-    //find and delete exercise
-    await Exercise.findByIdAndDelete(exerciseId);
-    return new NextResponse(JSON.stringify({ message: "Exercise deleted" }), {
-      status: 200,
-    });
+    //find and update the exercise
+    const updatedExercise = await Exercise.findByIdAndUpdate(
+      _id,
+      {
+        name,
+        type,
+        duration,
+        calories,
+        difficulty,
+        fatigue,
+        date,
+        time,
+        notes,
+      },
+      { new: true }
+    );
+
+    return new NextResponse(
+      JSON.stringify(
+        { message: "Exercise updated", exercise: updatedExercise },
+        { status: 200 }
+      )
+    );
   } catch (error) {
     return new NextResponse(
-      JSON.stringify({ error: "Error in deleting note" }, { status: 500 })
+      JSON.stringify({ error: "Error updating exercise" }, { status: 500 })
     );
   }
 }

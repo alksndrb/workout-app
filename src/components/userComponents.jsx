@@ -1,12 +1,9 @@
-import {
-  formatDate,
-  formatDateToDayInWeek,
-} from "@/app/services/exerciseService";
 import { handleLogOut } from "@/app/services/userServices";
 import Link from "next/link";
-import { NavLink } from "../inputComponents/inputComponents";
+import { NavLink } from "./inputComponents";
+import { formatDate, formatDateToDayInWeek } from "@/app/services/dateServices";
 
-//consider reorganizing components
+//displays username and logout button
 export function UserHeader({ username }) {
   return (
     <>
@@ -29,7 +26,6 @@ export function ExerciseComponent({
   calories,
   difficulty,
   fatigue,
-  date,
   time,
   notes,
   id,
@@ -61,9 +57,12 @@ export function ExerciseComponent({
           </div>
 
           <div className="flex-shrink-0 w-20 flex items-center justify-end">
-            <button className="w-fit px-3  bg-light border-accent border-2 mr-5">
+            <Link
+              href={`/edit-exercise/${id}`}
+              className="w-fit px-3  bg-light border-accent border-2 mr-5"
+            >
               Edit
-            </button>
+            </Link>
             <button
               onClick={() => {
                 handleDelete(id);
@@ -89,11 +88,18 @@ export function ExerciseComponent({
 }
 export function DateComponent({ date }) {
   const dayInWeek = formatDateToDayInWeek(date);
+  let dayColor = "text-black font-semibold";
+  if (dayInWeek === "Sun") {
+    dayColor = "text-red-500 font-semibold";
+  } else if (dayInWeek === "Sat") {
+    dayColor = "text-blue-500 font-semibold";
+  }
+
   return (
     <>
       <div className="bg-secondary">
-        <div className="max-w-[1200px] m-auto">
-          {dayInWeek} {formatDate(date)}
+        <div className="max-w-[1200px] m-auto ">
+          <span className={dayColor}>{dayInWeek}</span> {formatDate(date)}
         </div>
       </div>
     </>
