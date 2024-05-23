@@ -85,6 +85,7 @@ export default function Register() {
           className="flex justify-center pt-[100px]"
         >
           <FormBox>
+            <p className="text-3xl font-semibold pb-5">Register</p>
             <TextInput
               name="username"
               label="Username"

@@ -13,7 +13,7 @@ import {
 
 export default function Login() {
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -28,8 +28,6 @@ export default function Login() {
       }
     } catch (error) {
       console.log("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   }
   useEffect(() => {
@@ -60,11 +58,6 @@ export default function Login() {
     }));
   }
 
-  if (loading) {
-    // Render loading indicator or placeholder content while fetching data
-    return <p>Loading...</p>;
-  }
-
   return (
     <>
       <div>
@@ -73,6 +66,7 @@ export default function Login() {
           className="flex justify-center pt-[100px]"
         >
           <FormBox>
+            <p className="text-3xl font-semibold pb-5">Login</p>
             <TextInput
               name="username"
               label="Username"

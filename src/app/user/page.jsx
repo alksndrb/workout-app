@@ -11,7 +11,6 @@ import { deleteExercise, getUserExercises } from "../services/exerciseService";
 
 export default function UserPage() {
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
   //  check if user is logged in
   async function fetchData() {
@@ -30,8 +29,6 @@ export default function UserPage() {
       }
     } catch (error) {
       console.log("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -39,7 +36,6 @@ export default function UserPage() {
     fetchData();
   }, []);
   async function handleDelete(exerciseId) {
-    const userId = localStorage.getItem("userId");
     const isConfirmed = window.confirm(
       "Are you sure you want to delete this exercis?"
     );
@@ -48,11 +44,7 @@ export default function UserPage() {
       await fetchData();
     }
   }
-  if (loading) {
-    // Render loading indicator or placeholder content while fetching data
-    return <p>Loading...</p>;
-  }
-  //Add message when there are no exercises to display
+
   if (userData) {
     // construct the exercises
     const exercises = userData.exercises.map((exercise, i, arr) => {

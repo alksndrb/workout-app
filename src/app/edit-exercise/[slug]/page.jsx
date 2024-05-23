@@ -18,8 +18,6 @@ export default function EditExercise({ params }) {
   const [userId, setUserId] = useState(null);
   const [username, setUsername] = useState("");
   const [exercise, setExercise] = useState({});
-  //loading the page before getting init data
-  const [loading, setLoading] = useState(true);
 
   //check if user is logged and fetch innit data of exercise
   async function fetchData() {
@@ -40,8 +38,6 @@ export default function EditExercise({ params }) {
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
-    } finally {
-      setLoading(false);
     }
   }
   useEffect(() => {
@@ -84,11 +80,6 @@ export default function EditExercise({ params }) {
   const exerciseTypes = ["cardio", "core", "strength", "felxibility"];
   // allowed values for difficulty and fatigue
   const numValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-  if (loading) {
-    // Render loading indicator or placeholder content while fetching data
-    return <p>Loading...</p>;
-  }
 
   return (
     <>

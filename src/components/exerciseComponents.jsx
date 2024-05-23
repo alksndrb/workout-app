@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ExerciseInput({
   name,
@@ -111,9 +111,12 @@ export function ExerciseDuration({
   value,
   setExercise,
 }) {
-  const [min, setMin] = useState(Math.floor(value / 60));
-  const [sec, setSec] = useState(value % 60);
-
+  const [min, setMin] = useState("");
+  const [sec, setSec] = useState("");
+  useEffect(() => {
+    setMin(Math.floor(value / 60));
+    setSec(Number(value % 60));
+  });
   function onMinChange(e) {
     setMin(Number(e.target.value));
     setExercise((prevExercise) => ({

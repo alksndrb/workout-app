@@ -37,7 +37,7 @@ export function ExerciseComponent({
         <div className="flex">
           <div className="flex-1 flex items-center">
             <span>{time}</span> &nbsp;&nbsp;
-            <span className="text-xl">
+            <span className="text-xl w-[500px]">
               {name}
               &nbsp; - &nbsp;
               {type}

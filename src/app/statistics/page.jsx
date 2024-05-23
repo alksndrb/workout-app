@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { UserHeader } from "@/components/userComponents";
@@ -8,11 +8,13 @@ import { GreenLine } from "@/components/styleComponents";
 import Link from "next/link";
 import { getStatistics } from "../services/exerciseService";
 import { formatDateToMonthYear } from "../services/dateServices";
+import { checkUser } from "../services/userServices";
 
 export default function statistics() {
   const [selectedDate, setSelectedDate] = useState(formatDateYM(new Date()));
   const [statistics, setStatistics] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState("");
   //check if user is logged in
   async function checkUserInnit() {
     try {
@@ -31,6 +33,9 @@ export default function statistics() {
       console.error("Error getting user: ", error);
     }
   }
+  useEffect(() => {
+    checkUserInnit();
+  }, []);
   function formatDateYM(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -77,7 +82,7 @@ export default function statistics() {
   }
   return (
     <>
-      <UserHeader />
+      <UserHeader username={username} />
       <div className="max-w-[1200px] m-auto">
         <div className="py-5">
           <label htmlFor="date" className="text-lg">
